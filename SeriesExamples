@@ -1,0 +1,21 @@
+import pandas as pd
+import numpy as np
+
+
+series_1 = pd.Series([1,2,3,4,5,6,np.nan,8,9])
+print(series_1)
+
+d = pd.date_range('20200305',periods=10)
+print(d)
+
+df = pd.DataFrame(np.random.rand(10,4), index=d, columns=['A','B','C','D'])
+print(df)
+
+df_2 = pd.DataFrame({
+    'S.No':[1,2,3,4],
+    'Name':['Sudha', 'Saraswathi','Sudhakar','Avyukth'],
+    'Age':[34,32,37,6],
+    'City':['Hyderabad','Hyderabad','Chennai','Chennai']
+})
+#head(), tail(), index, columns, describe(),
+print(df_2.iloc[1:2,2:3])

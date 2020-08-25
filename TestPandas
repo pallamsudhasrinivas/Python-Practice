@@ -1,0 +1,42 @@
+import pandas as pd, numpy as np, seaborn as sns, matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings("ignore")
+
+df = pd.read_csv("C:\\Users\\Sudhakar\\Desktop\\Python\\tendulkar_ODI.csv")
+
+# Replacing 'TDNB', 'DNB', '+' from Rows column
+df['Runs'] = df['Runs'].str.replace("TDNB", "")
+df['Runs'] = df['Runs'].str.replace("DNB", "")
+df['Runs'] = df['Runs'].str.replace("*", "")
+
+# Replace empty strings with nan
+df['Runs'].replace("", np.nan, inplace=True)
+
+# Dropping rows with nan
+df = df.dropna(axis=0, subset=['Runs'])
+
+# Converting type to int
+df['Runs'] = df['Runs'].astype("int32")
+
+# Remove rows where runs greater than 40
+df = df[df['Runs'] <= 40]
+
+# Reset index column
+df.reset_index(drop=True, inplace=True)
+
+# Creating categorical column range
+df.loc[(df['Runs'] >= 0) & (df['Runs'] < 10), 'Range'] = "0-10"
+df.loc[(df['Runs'] >= 10) & (df['Runs'] < 20), 'Range'] = "10-20"
+df.loc[(df['Runs'] >= 20) & (df['Runs'] < 30), 'Range'] = "20-30"
+df.loc[(df['Runs'] >= 30) & (df['Runs'] <= 40), 'Range'] = "30-40"
+
+# Creating Barplot
+
+Range_ValueCounts = sns.barplot(data=df, x=df.Range.value_counts().index, y=df.Range.value_counts(),
+                                order=["0-10", "10-20", "20-30", "30-40"])
+Range_ValueCounts.set(xlabel='Range', ylabel='value_counts')
+plt.show()
+
+plt.hist(df['4s'],bins=100)
+plt.show()
